@@ -1,6 +1,6 @@
 /**
  * Test class to test this stuff
- * @author Marco Antonio Santana <marco.santana69@qmail.cuny.edu>
+ * @author Marco Antonio Santana <marco@santana.nyc>
  * @version 0.2022
  */
 public class Test{
