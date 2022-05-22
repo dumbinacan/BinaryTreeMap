@@ -5,11 +5,10 @@
  * @version 0.2022
  */
 public class MapNode<K, V>{
-/*********Data Members*****************************/
     private K key;
     private V value;
     private MapNode<K, V> left, right;
-/*********Constructors*****************************/
+
     private MapNode(){
         key = null;
         value = null;
@@ -22,13 +21,13 @@ public class MapNode<K, V>{
         left = null;
         right = null;
     }
-/*********Accessors********************************/
+
     public K key(){return key;}
     public V value(){return value;}
     public MapNode<K, V> left(){return left;}
     public MapNode<K, V> right(){return right;}
     public boolean isLeaf(){return (left == null && right == null);}
-/*********Mutators*********************************/
+
     public void setKey(K key){this.key = key;}
     public void setValue(V value){this.value = value;}
     public void setLeft(MapNode<K, V> left){this.left = left;}

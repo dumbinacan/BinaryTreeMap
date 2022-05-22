@@ -28,6 +28,7 @@ public class BinaryTreeMap<K, V> implements Map<K, V>{
 	    size = 0;
 	    root = null;
     }
+
     /**
      * @return the number of key-value mappings in this map
      */
@@ -41,7 +42,7 @@ public class BinaryTreeMap<K, V> implements Map<K, V>{
     /**
      * @return true if this map contains a mapping for the specified key.
      */
-    public boolean containsKey(Object key) {return get((K) key) != null;}
+    public boolean containsKey(Object key) {return this.get((K) key) != null;}
 
     /**
      * @return true if this map maps one or more keys to the specified value.
@@ -71,15 +72,13 @@ public class BinaryTreeMap<K, V> implements Map<K, V>{
         return null;
     }
 
-    // try using get(K) before going into recursion
     public V put(K key, V value){
         if(root == null){
             root = new MapNode<K,V>(key, value);
             ++size;
             return null;
         }
-        else
-            return recPut(root, key, value);
+        return recPut(root, key, value);
     }
     private V recPut(MapNode<K, V> it, K key, V value){
         V tmp = null;
@@ -89,6 +88,8 @@ public class BinaryTreeMap<K, V> implements Map<K, V>{
             return tmp;
         }
         // whats key  < it.key() mean in Java?
+        // we don't care about order
+        // just put shit in left to right
         if(key < it.key()){
             if(it.left() != null)
                 recPut(it.left(), key, value);
