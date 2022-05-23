@@ -1,5 +1,4 @@
-import java.util.Collection;
-import java.util.Map;
+import java.util.Collection; import java.util.Map;
 import java.util.Set;
 
 /**
@@ -81,38 +80,45 @@ public class BinaryTreeMap<K, V> implements Map<K extends Comparable<K>, V> {
     }
 
     public V put(K key, V value){
+
+        MapNode<K, V> node;
+        V value = null;
+
         if(root == null){
             root = new MapNode<K,V>(key, value);
             ++size;
             return null;
         }
-        return recPut(root, key, value);
+
+        node = findParentNode(root, key);
+
+        if ( key.compareTo( it.key() ) < 0 ) {
+            if ( it.left() != null ) { value = it.left().value(); }
+            it.setLeft( new MapNode<K, V> (key, value) ); // maybe don't create a new one if you don't have to?
+        }
+
+        if ( key.compareTo( it.key() ) > 0 ) {
+            if ( it.right() != null ) { value = it.right().value(); }
+            it.setRight( new MapNode<K, V> (key, value) ); // maybe don't create a new one if you don't have to?
+        }
+
+        return value;
     }
-    private V recPut(MapNode<K, V> it, K key, V value){
-        V tmp = null;
-        if(key.equals.( it.key() ) ){
-            tmp = it.value();
-            it.setValue(value);
-            return tmp;
+
+    private V findParentNode(MapNode<K, V> it, K key){
+        if ( it.key().equals(key) ) { return it; } // root node
+
+        if ( key.compareTo( it.key() ) < 0 ) {
+            if ( it.left() == null || key.equals( it.left().key() ) ) { return it; }
+            findParentNode(it.left(), key);
         }
-        if( key.compareTo( it.key() ) < 0 ) {
-            if(it.left() != null)
-                recPut(it.left(), key, value);
-            else{
-                it.setLeft(new MapNode<K, V>(key, value));
-                ++size;
-                return null;
-            }
+
+        if ( key.compareTo( it.key() ) > 0 ) {
+            if ( it.right() == null || key.equals( it.right().key() ) ) { return it; }
+            findParentNode(it.right(), key);
         }
-        if( key.compareTo( it.key() ) > 0 ) {
-            if(it.right() != null)
-                recPut(it.right(), key, value);
-            else{
-                it.setRight(new MapNode<K, V>(key, value));
-                ++size;
-                return null;
-            }
-        }
+
+        return null;
     }
  
     @SuppressWarnings("unchecked")
