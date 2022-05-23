@@ -61,15 +61,22 @@ public class BinaryTreeMap<K, V> implements Map<K extends Comparable<K>, V> {
      */
     @SuppressWarnings("unchecked")
     public V get(Object k){
+        MapNode<K, V> node;
         K key = (K) k;
         if(root == null){return null;}
-        return recGet(root, key);
+        node = findNode(root, key);
+        return node.value();
     }
-    private V recGet(MapNode<K, V> it, K key){
-        if(it.key().equals(key)){return it.value();}
-        if(it.left() != null){recGet(it.left(), key);}
-        if(it.right() != null){recGet(it.right(), key);}
-        return null;
+    private MapNode<K, V> findNode(MapNode<K, V> it, K key){
+        if ( it.key().equals(key) ) { return it; }
+        if ( key.compareTo( it.key() ) < 0 ) {
+            if ( it.left() == null ) { return null; }
+            findNode(it.left(), key);
+        }
+        if ( key.compareTo( it.key() ) > 0 ) {
+            if ( it.right() == null ) { return null; }
+            findNode(it.right(), key);
+        }
     }
 
     public V put(K key, V value){
@@ -82,7 +89,7 @@ public class BinaryTreeMap<K, V> implements Map<K extends Comparable<K>, V> {
     }
     private V recPut(MapNode<K, V> it, K key, V value){
         V tmp = null;
-        if(it.key() == key){
+        if(key.equals.( it.key() ) ){
             tmp = it.value();
             it.setValue(value);
             return tmp;
@@ -114,7 +121,14 @@ public class BinaryTreeMap<K, V> implements Map<K extends Comparable<K>, V> {
         K key = (K) k;
         if(root == null)
             return null;
-// TODO if(root.//is leaf and also the key is root... the rest should be the same whether root or not right????
+        if(root.isLeaf() && root.key() == key) {
+            value = root.value();
+            this.clear;
+            return value;
+        }// else find key
+        // generally to find the node replacing the removed node traverse once to the left
+        // then traverse all the way to the right. that node will remain balance
+        // note that if it is not a leaf ( it has a left node ) make the left node point to the right of the previous node
         if(root.key() == key){
             value = root.value();
             if(root.left() != null){// check if right is null after that
