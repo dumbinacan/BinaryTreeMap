@@ -80,21 +80,6 @@ public class BinaryTreeMap<K, V> implements Map<K extends Comparable<K>, V> {
         return null;
     }
 
-    private MapNode<K, V> findNodeParent(MapNode<K, V> it, K key){
-        if ( it.key().equals(key) ) { return null; }// should only be reached if it is root
-        if ( key.compareTo( it.key() ) < 0 ) {
-            if ( it.left() == null ) { return null; }
-            if ( key.equals( it.left().key() ) ) { return it; }
-            findNode(it.left(), key);
-        }
-        if ( key.compareTo( it.key() ) > 0 ) {
-            if ( it.right() == null ) { return null; }
-            if ( key.equals( it.right().key() ) ) { return it; }
-            findNode(it.right(), key);
-        }
-        return null;
-    }
-
     public V put(K key, V value){
         if(root == null){
             root = new MapNode<K,V>(key, value);
@@ -131,68 +116,42 @@ public class BinaryTreeMap<K, V> implements Map<K extends Comparable<K>, V> {
     }
  
     @SuppressWarnings("unchecked")
-    public V remove(Object k){
+    public V remove(Object k) {
         V value;
-        MapNode<K, V> tmp, tmpParent, right;
+        MapNode<K, V> tmp, tmpParent, replacement;
         K key = (K) k;
-        if(root == null)
-            return null;
+
+        if(root == null) { return null; }
         if(root.isLeaf() && root.key() == key) {
             value = root.value();
             this.clear;
             return value;
         }
-        tmp = findNode(root, key);
-        tmpParent = findNodeParent(root, key);
-        if ( tmp == null ) { return null; }
 
-        // generally to find the node replacing the removed node traverse once to the left
-        // then traverse all the way to the right. that node will remain balance
-        // note that if it is not a leaf ( it has a left node ) make the left node point to the right of the previous node
-        if(root.key() == key){
-            value = root.value();
-            if(root.left() != null){// check if right is null after that
-                tmp = getVictim(root);
-                tmpParent = getVictimParent(root);
-                right = root.right();
-                if(tmpParent.right() == tmp)
-                    tmpParent.setRight(null);
-                else if(tmpParent.left() == tmp)
-                    tmpParent.setLeft(null);
-                root = tmp;
-                root.setRight(right);
-                --size;
-            }
-            else if(root.right() != null){
-                root = root.right();
-                --size;
-            }
-            else{
-                root = null;
-                --size;
-            }
+        tmp = findNode(root, key);
+
+        if ( tmp == null ) { return null; } // key not found
+
+        value = tmp.value(); // store value before removal
+        --size; // update the size
+
+        /* find the replacement node */
+        if ( tmp.left() == null ) { replacement == tmp.right(); }
+        else {
+            replacement = tmp.left();
+            while ( replacement.right() != null ) { replacement = replacement.right(); }
+        } 
+
+        /* replace the node */
+        tmp.setKey( replacement.key() );
+        tmp.setValue( replacement.value() );
+        if ( replacement.left() != null ) {
+            replacement.setKey( replacement.left().key() );
+            replacement.setValue( replacement.left().value() );
+            replacement.setLeft( replacement.left().left() );
         }
+
         return value;
-    }
-    private MapNode<K, V> getVictim(MapNode<K, V> start){goRight(start.left());}
-    private MapNode<K, V> goRight(MapNode<K, V> node){
-        if(node.right() != null)
-            goRight(node.right());
-        else if(node.left() != null)
-            goRight(node.left());
-        else
-            return node;
-    }
-    private MapNode<K, V> getVictimParent(MapNode<K, V> start){goRightParent(start.left(), start);}
-    private MapNode<K, V> goRightParent(MapNode<K, V> node, MapNode<K, V> prev){
-        if(node.right() != null){
-            goRightParent(node.right(), node);
-        }
-        else if(node.left() != null){
-            goRightParent(node.left(), node);
-        }
-        else
-            return prev;
     }
    @SuppressWarnings("unchecked")
     public Set<Map.Entry<K, V>> entrySet(){ return null;}//for now just to get all the methods here and shit
