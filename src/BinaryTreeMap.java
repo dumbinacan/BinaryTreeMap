@@ -1,4 +1,5 @@
-import java.util.Collection; import java.util.Map;
+import java.util.Collection;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -8,7 +9,7 @@ import java.util.Set;
  * @version 0.2022
  */
 
-public class BinaryTreeMap<K, V> implements Map<K extends Comparable<K>, V> {
+public class BinaryTreeMap<K extends Comparable<K>, V> implements Map<K, V> {
 	
     private MapNode<K, V> root;
     private int size;
@@ -41,6 +42,7 @@ public class BinaryTreeMap<K, V> implements Map<K extends Comparable<K>, V> {
     /**
      * @return true if this map contains a mapping for the specified key.
      */
+   @SuppressWarnings("unchecked")
     public boolean containsKey(Object key) {return this.get((K) key) != null;}
 
     /**
@@ -62,8 +64,9 @@ public class BinaryTreeMap<K, V> implements Map<K extends Comparable<K>, V> {
     public V get(Object k){
         MapNode<K, V> node;
         K key = (K) k;
-        if(root == null){return null;}
+        if (root == null) {return null;}
         node = findNode(root, key);
+        if (node == null) {return null;}
         return node.value();
     }
     private MapNode<K, V> findNode(MapNode<K, V> it, K key){
@@ -82,7 +85,7 @@ public class BinaryTreeMap<K, V> implements Map<K extends Comparable<K>, V> {
     public V put(K key, V value){
 
         MapNode<K, V> node;
-        V value = null;
+        V tmp = null;
 
         if(root == null){
             root = new MapNode<K,V>(key, value);
@@ -92,20 +95,23 @@ public class BinaryTreeMap<K, V> implements Map<K extends Comparable<K>, V> {
 
         node = findParentNode(root, key);
 
-        if ( key.compareTo( it.key() ) < 0 ) {
-            if ( it.left() != null ) { value = it.left().value(); }
-            it.setLeft( new MapNode<K, V> (key, value) ); // maybe don't create a new one if you don't have to?
+        if (node == null) { return null; }
+
+        if ( key.compareTo( node.key() ) < 0 ) {
+            if ( node.left() != null ) { tmp = node.left().value(); --size; }
+            node.setLeft( new MapNode<K, V> (key, value) ); // maybe don't create a new one if you don't have to?
         }
 
-        if ( key.compareTo( it.key() ) > 0 ) {
-            if ( it.right() != null ) { value = it.right().value(); }
-            it.setRight( new MapNode<K, V> (key, value) ); // maybe don't create a new one if you don't have to?
+        if ( key.compareTo( node.key() ) > 0 ) {
+            if ( node.right() != null ) { tmp = node.right().value(); --size; }
+            node.setRight( new MapNode<K, V> (key, value) ); // maybe don't create a new one if you don't have to?
         }
 
-        return value;
+        ++size;
+        return tmp;
     }
 
-    private V findParentNode(MapNode<K, V> it, K key){
+    private MapNode<K, V> findParentNode(MapNode<K, V> it, K key){
         if ( it.key().equals(key) ) { return it; } // root node
 
         if ( key.compareTo( it.key() ) < 0 ) {
@@ -130,7 +136,7 @@ public class BinaryTreeMap<K, V> implements Map<K extends Comparable<K>, V> {
         if(root == null) { return null; }
         if(root.isLeaf() && root.key() == key) {
             value = root.value();
-            this.clear;
+            this.clear();
             return value;
         }
 
@@ -142,7 +148,7 @@ public class BinaryTreeMap<K, V> implements Map<K extends Comparable<K>, V> {
         --size; // update the size
 
         /* find the replacement node */
-        if ( tmp.left() == null ) { replacement == tmp.right(); }
+        if ( tmp.left() == null ) { replacement = tmp.right(); }
         else {
             replacement = tmp.left();
             while ( replacement.right() != null ) { replacement = replacement.right(); }
