@@ -77,6 +77,22 @@ public class BinaryTreeMap<K, V> implements Map<K extends Comparable<K>, V> {
             if ( it.right() == null ) { return null; }
             findNode(it.right(), key);
         }
+        return null;
+    }
+
+    private MapNode<K, V> findNodeParent(MapNode<K, V> it, K key){
+        if ( it.key().equals(key) ) { return null; }// should only be reached if it is root
+        if ( key.compareTo( it.key() ) < 0 ) {
+            if ( it.left() == null ) { return null; }
+            if ( key.equals( it.left().key() ) ) { return it; }
+            findNode(it.left(), key);
+        }
+        if ( key.compareTo( it.key() ) > 0 ) {
+            if ( it.right() == null ) { return null; }
+            if ( key.equals( it.right().key() ) ) { return it; }
+            findNode(it.right(), key);
+        }
+        return null;
     }
 
     public V put(K key, V value){
@@ -125,7 +141,11 @@ public class BinaryTreeMap<K, V> implements Map<K extends Comparable<K>, V> {
             value = root.value();
             this.clear;
             return value;
-        }// else find key
+        }
+        tmp = findNode(root, key);
+        tmpParent = findNodeParent(root, key);
+        if ( tmp == null ) { return null; }
+
         // generally to find the node replacing the removed node traverse once to the left
         // then traverse all the way to the right. that node will remain balance
         // note that if it is not a leaf ( it has a left node ) make the left node point to the right of the previous node
