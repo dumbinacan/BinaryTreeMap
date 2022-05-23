@@ -9,7 +9,7 @@ import java.util.Set;
  * @version 0.2022
  */
 
-public class BinaryTreeMap<K, V> implements Map<K, V>{
+public class BinaryTreeMap<K, V> implements Map<K extends Comparable<K>, V> {
 	
     private MapNode<K, V> root;
     private int size;
@@ -87,10 +87,7 @@ public class BinaryTreeMap<K, V> implements Map<K, V>{
             it.setValue(value);
             return tmp;
         }
-        // whats key  < it.key() mean in Java?
-        // we don't care about order
-        // just put shit in left to right
-        if(key < it.key()){
+        if( key.compareTo( it.key() ) < 0 ) {
             if(it.left() != null)
                 recPut(it.left(), key, value);
             else{
@@ -99,7 +96,7 @@ public class BinaryTreeMap<K, V> implements Map<K, V>{
                 return null;
             }
         }
-        if(key > it.key()){
+        if( key.compareTo( it.key() ) > 0 ) {
             if(it.right() != null)
                 recPut(it.right(), key, value);
             else{
