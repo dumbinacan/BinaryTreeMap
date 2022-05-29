@@ -5,7 +5,7 @@
  * @version 0.2022
  */
 import java.util.Map;
-public class MapNode<K, V> implements Map.Entry<K, V> {
+public class MapNode<K, V> { // implements Map.Entry<K, V> {
     private K key;
     private V value;
     private MapNode<K, V> left, right;
@@ -23,8 +23,8 @@ public class MapNode<K, V> implements Map.Entry<K, V> {
         right = null;
     }
 
-    public K key() {return key;}
-    public V value() {return value;}
+    public K getKey() {return key;}
+    public V getValue() {return value;}
     public MapNode<K, V> left() {return left;}
     public MapNode<K, V> right() {return right;}
     public boolean isLeaf() {return (left == null && right == null);}
