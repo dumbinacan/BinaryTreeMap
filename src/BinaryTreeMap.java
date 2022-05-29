@@ -49,12 +49,17 @@ public class BinaryTreeMap<K extends Comparable<K>, V> implements Map<K, V> {
      * @return true if this map maps one or more keys to the specified value.
      */
     @SuppressWarnings("unchecked")
-    public boolean containsValue(Object value){return recCV(root, (V) value);}
-    private boolean recCV(MapNode<K, V> it, V value){
-        if(it.value() == value){return true;}
-        if(it.left() != null){recCV(it.left(), value);}
-        if(it.right() != null){recCV(it.right(), value);}
-        return false;
+    public boolean containsValue(Object value) {
+        if ( root == null ) { return false; }
+        return recCV(root, (V) value);
+    }
+
+    private boolean recCV(MapNode<K, V> it, V value) {
+        boolean containsValue = false;
+        if (it.value() == value) { containsValue = true; }
+        if (it.left() != null) { containsValue = recCV(it.left(), value); }
+        if (it.right() != null) { containsValue = recCV(it.right(), value); }
+        return containsValue;
     }
 
     /**
@@ -69,17 +74,18 @@ public class BinaryTreeMap<K extends Comparable<K>, V> implements Map<K, V> {
         if (node == null) {return null;}
         return node.value();
     }
+
     private MapNode<K, V> findNode(MapNode<K, V> it, K key){
-        if ( it.key().equals(key) ) { return it; }
+        if ( key.equals( it.key() ) ) { return it; }
         if ( key.compareTo( it.key() ) < 0 ) {
             if ( it.left() == null ) { return null; }
-            findNode(it.left(), key);
+            it = it.left();
         }
         if ( key.compareTo( it.key() ) > 0 ) {
             if ( it.right() == null ) { return null; }
-            findNode(it.right(), key);
+            it = it.right();
         }
-        return null;
+        return findNode(it, key);
     }
 
     public V put(K key, V value){
@@ -94,8 +100,6 @@ public class BinaryTreeMap<K extends Comparable<K>, V> implements Map<K, V> {
         }
 
         node = findParentNode(root, key);
-
-        if (node == null) { return null; }
 
         if ( key.compareTo( node.key() ) < 0 ) {
             if ( node.left() != null ) { tmp = node.left().value(); --size; }
@@ -116,15 +120,15 @@ public class BinaryTreeMap<K extends Comparable<K>, V> implements Map<K, V> {
 
         if ( key.compareTo( it.key() ) < 0 ) {
             if ( it.left() == null || key.equals( it.left().key() ) ) { return it; }
-            findParentNode(it.left(), key);
+            it = it.left();
         }
 
         if ( key.compareTo( it.key() ) > 0 ) {
             if ( it.right() == null || key.equals( it.right().key() ) ) { return it; }
-            findParentNode(it.right(), key);
+            it = it.right();
         }
 
-        return null;
+        return findParentNode(it, key);
     }
  
     @SuppressWarnings("unchecked")
@@ -134,11 +138,6 @@ public class BinaryTreeMap<K extends Comparable<K>, V> implements Map<K, V> {
         K key = (K) k;
 
         if(root == null) { return null; }
-        if(root.isLeaf() && root.key() == key) {
-            value = root.value();
-            this.clear();
-            return value;
-        }
 
         tmp = findNode(root, key);
 
@@ -146,6 +145,13 @@ public class BinaryTreeMap<K extends Comparable<K>, V> implements Map<K, V> {
 
         value = tmp.value(); // store value before removal
         --size; // update the size
+
+        if ( tmp.isLeaf() ) {
+            replacement = findParentNode(root, key);
+            if ( key.compareTo( replacement.key() ) < 0 ) { replacement.setLeft(null); }
+            else replacement.setRight(null);
+            return value;
+        }
 
         /* find the replacement node */
         if ( tmp.left() == null ) { replacement = tmp.right(); }
@@ -165,7 +171,7 @@ public class BinaryTreeMap<K extends Comparable<K>, V> implements Map<K, V> {
 
         return value;
     }
-   @SuppressWarnings("unchecked")
+
     public Set<Map.Entry<K, V>> entrySet(){ return null;}//for now just to get all the methods here and shit
     public Collection<V> values(){return null;}//for now just to get all the methods here and shit
     public Set<K> keySet(){return null;}//for now just to get all the methods here and shit

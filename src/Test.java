@@ -32,10 +32,22 @@ public class Test{
             System.out.println("size: " + test.size());
         }
         System.out.println("containsValue('$'): " +test.containsValue('$'));
+        System.out.println("containsValue('$'): " +test.containsValue('$'));
+        System.out.println("containsValue('$'): " +test.containsValue('$'));
+        System.out.println("containsValue('$'): " +test.containsValue('$'));
+        System.out.println("containsValue('$'): " +test.containsValue('$'));
         System.out.println("puting $ in this map");
         test.put(454289, '$');
         System.out.println("containsValue('$'): " + test.containsValue('$'));
+        System.out.println("containsValue('$'): " + test.containsValue('$'));
+        System.out.println("containsValue('$'): " + test.containsValue('$'));
+        System.out.println("containsValue('$'): " + test.containsValue('$'));
+        System.out.println("containsValue('$'): " + test.containsValue('$'));
         System.out.println(test.remove(454289));
+        System.out.println("containsValue('$'): " + test.containsValue('$'));
+        System.out.println("containsValue('$'): " + test.containsValue('$'));
+        System.out.println("containsValue('$'): " + test.containsValue('$'));
+        System.out.println("containsValue('$'): " + test.containsValue('$'));
         System.out.println("containsKey(0): " + test.containsKey(0));
         System.out.println("isEmpty(): " + test.isEmpty());
         System.out.println("clear()");
