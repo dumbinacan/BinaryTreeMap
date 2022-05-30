@@ -55,7 +55,7 @@ public class BinaryTreeMap<K extends Comparable<K>, V> implements Map<K, V> {
 
     private boolean recCV(MapNode<K, V> it, V value) {
         boolean containsValue = false;
-        if (it.getValue() == value) { containsValue = true; }
+        if (it.value() == value) { containsValue = true; }
         if (it.left() != null) { containsValue = recCV(it.left(), value); }
         if (it.right() != null) { containsValue = recCV(it.right(), value); }
         return containsValue;
@@ -71,16 +71,16 @@ public class BinaryTreeMap<K extends Comparable<K>, V> implements Map<K, V> {
         if (root == null) {return null;}
         node = findNode(root, key);
         if (node == null) {return null;}
-        return node.getValue();
+        return node.value();
     }
 
     private MapNode<K, V> findNode(MapNode<K, V> it, K key){
-        if ( key.equals( it.getKey() ) ) { return it; }
-        if ( key.compareTo( it.getKey() ) < 0 ) {
+        if ( key.equals( it.key() ) ) { return it; }
+        if ( key.compareTo( it.key() ) < 0 ) {
             if ( it.left() == null ) { return null; }
             it = it.left();
         }
-        if ( key.compareTo( it.getKey() ) > 0 ) {
+        if ( key.compareTo( it.key() ) > 0 ) {
             if ( it.right() == null ) { return null; }
             it = it.right();
         }
@@ -100,13 +100,13 @@ public class BinaryTreeMap<K extends Comparable<K>, V> implements Map<K, V> {
 
         node = findParentNode(root, key);
 
-        if ( key.compareTo( node.getKey() ) < 0 ) {
-            if ( node.left() != null ) { tmp = node.left().getValue(); --size; }
+        if ( key.compareTo( node.key() ) < 0 ) {
+            if ( node.left() != null ) { tmp = node.left().value(); --size; }
             node.setLeft( new MapNode<K, V> (key, value) ); // maybe don't create a new one if you don't have to?
         }
 
-        if ( key.compareTo( node.getKey() ) > 0 ) {
-            if ( node.right() != null ) { tmp = node.right().getValue(); --size; }
+        if ( key.compareTo( node.key() ) > 0 ) {
+            if ( node.right() != null ) { tmp = node.right().value(); --size; }
             node.setRight( new MapNode<K, V> (key, value) ); // maybe don't create a new one if you don't have to?
         }
 
@@ -115,15 +115,15 @@ public class BinaryTreeMap<K extends Comparable<K>, V> implements Map<K, V> {
     }
 
     private MapNode<K, V> findParentNode(MapNode<K, V> it, K key){
-        if ( it.getKey().equals(key) ) { return it; } // root node
+        if ( it.key().equals(key) ) { return it; } // root node
 
-        if ( key.compareTo( it.getKey() ) < 0 ) {
-            if ( it.left() == null || key.equals( it.left().getKey() ) ) { return it; }
+        if ( key.compareTo( it.key() ) < 0 ) {
+            if ( it.left() == null || key.equals( it.left().key() ) ) { return it; }
             it = it.left();
         }
 
-        if ( key.compareTo( it.getKey() ) > 0 ) {
-            if ( it.right() == null || key.equals( it.right().getKey() ) ) { return it; }
+        if ( key.compareTo( it.key() ) > 0 ) {
+            if ( it.right() == null || key.equals( it.right().key() ) ) { return it; }
             it = it.right();
         }
 
@@ -142,12 +142,12 @@ public class BinaryTreeMap<K extends Comparable<K>, V> implements Map<K, V> {
 
         if ( tmp == null ) { return null; } // key not found
 
-        value = tmp.getValue(); // store value before removal
+        value = tmp.value(); // store value before removal
         --size; // update the size
 
         if ( tmp.isLeaf() ) {
             replacement = findParentNode(root, key);
-            if ( key.compareTo( replacement.getKey() ) < 0 ) { replacement.setLeft(null); }
+            if ( key.compareTo( replacement.key() ) < 0 ) { replacement.setLeft(null); }
             else replacement.setRight(null);
             return value;
         }
@@ -160,11 +160,11 @@ public class BinaryTreeMap<K extends Comparable<K>, V> implements Map<K, V> {
         } 
 
         /* replace the node */
-        tmp.setKey( replacement.getKey() );
-        tmp.setValue( replacement.getValue() );
+        tmp.setKey( replacement.key() );
+        tmp.setValue( replacement.value() );
         if ( replacement.left() != null ) {
-            replacement.setKey( replacement.left().getKey() );
-            replacement.setValue( replacement.left().getValue() );
+            replacement.setKey( replacement.left().key() );
+            replacement.setValue( replacement.left().value() );
             replacement.setLeft( replacement.left().left() );
         }
 
