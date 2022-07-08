@@ -1,4 +1,5 @@
 import java.util.Collection;
+import java.util.ArrayList;
 import java.util.Map;
 import java.util.Set;
 
@@ -172,8 +173,19 @@ public class BinaryTreeMap<K extends Comparable<K>, V> implements Map<K, V> {
         return value;
     }
 
+    public Collection<V> values() {
+        ArrayList<V> values = new ArrayList<V>();
+        grabVals( root, values );
+        return values;
+    }
+    private void grabVals(MapNode<K, V> it, ArrayList<V> vals) {
+        if ( it.left() != null ) { grabVals( it.left(), vals ); }
+        if ( it.right() != null ) { grabVals( it.right(), vals ); }
+        vals.add( it.getValue() );
+    }
+
+
     public Set<Map.Entry<K, V>> entrySet(){ return null;}//for now just to get all the methods here and shit
-    public Collection<V> values(){return null;}//for now just to get all the methods here and shit
     public Set<K> keySet(){return null;}//for now just to get all the methods here and shit
     public void putAll(Map<? extends K, ? extends V> m){}//for now just to get all the methods here and shit
 }

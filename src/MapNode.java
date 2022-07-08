@@ -5,7 +5,7 @@
  * @version 0.2022
  */
 import java.util.Map;
-public class MapNode<K, V> { // implements Map.Entry<K, V> {
+public class MapNode<K extends Comparable<K>, V> { 
     private K key;
     private V value;
     private MapNode<K, V> left, right;
