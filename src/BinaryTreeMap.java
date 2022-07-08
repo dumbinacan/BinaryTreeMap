@@ -2,6 +2,7 @@ import java.util.Collection;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.Set;
+import java.util.HashSet;
 
 /**
  * This class is an implementation of the map interface using a binary tree
@@ -184,8 +185,17 @@ public class BinaryTreeMap<K extends Comparable<K>, V> implements Map<K, V> {
         vals.add( it.getValue() );
     }
 
+    public Set<K> keySet() {
+        HashSet<K> keys = new HashSet<K>();
+        grabKeys( root, keys );
+        return keys;
+    }
+    private void grabKeys(MapNode<K, V> it, HashSet<K> keys) {
+        if ( it.left() != null ) { grabKeys( it.left(), keys ); }
+        if ( it.right() != null ) { grabKeys( it.right(), keys ); }
+        keys.add( it.getKey() );
+    }
 
     public Set<Map.Entry<K, V>> entrySet(){ return null;}//for now just to get all the methods here and shit
-    public Set<K> keySet(){return null;}//for now just to get all the methods here and shit
     public void putAll(Map<? extends K, ? extends V> m){}//for now just to get all the methods here and shit
 }
