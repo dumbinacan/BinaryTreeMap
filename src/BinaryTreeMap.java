@@ -19,7 +19,7 @@ public class BinaryTreeMap<K extends Comparable<K>, V> implements Map<K, V> {
     /**
      * Constructs a BinaryTreeMap
      */
-    public BinaryTreeMap(){
+    public BinaryTreeMap() {
         this.clear();
     }
 
@@ -34,12 +34,12 @@ public class BinaryTreeMap<K extends Comparable<K>, V> implements Map<K, V> {
     /**
      * @return the number of key-value mappings in this map
      */
-    public int size(){return size;}
+    public int size() {return size;}
 
     /**
      * @return true if this map contains no key-value mappings
      */
-    public boolean isEmpty(){return (root == null);}
+    public boolean isEmpty() {return (root == null);}
 
     /**
      * @return true if this map contains a mapping for the specified key.
@@ -68,7 +68,7 @@ public class BinaryTreeMap<K extends Comparable<K>, V> implements Map<K, V> {
      * @return V if this map contains a value for the specified key else return null
      */
     @SuppressWarnings("unchecked")
-    public V get(Object k){
+    public V get(Object k) {
         MapNode<K, V> node;
         K key = (K) k;
         if (root == null) {return null;}
@@ -77,7 +77,7 @@ public class BinaryTreeMap<K extends Comparable<K>, V> implements Map<K, V> {
         return node.getValue();
     }
 
-    private MapNode<K, V> findNode(MapNode<K, V> it, K key){
+    private MapNode<K, V> findNode(MapNode<K, V> it, K key) {
         if ( key.equals( it.getKey() ) ) { return it; }
         if ( key.compareTo( it.getKey() ) < 0 ) {
             if ( it.left() == null ) { return null; }
@@ -90,12 +90,12 @@ public class BinaryTreeMap<K extends Comparable<K>, V> implements Map<K, V> {
         return findNode(it, key);
     }
 
-    public V put(K key, V value){
+    public V put(K key, V value) {
 
         MapNode<K, V> node;
         V tmp = null;
 
-        if(root == null){
+        if(root == null) {
             root = new MapNode<K,V>(key, value);
             ++size;
             return null;
@@ -104,20 +104,31 @@ public class BinaryTreeMap<K extends Comparable<K>, V> implements Map<K, V> {
         node = findParentNode(root, key);
 
         if ( key.compareTo( node.getKey() ) < 0 ) {
-            if ( node.left() != null ) { tmp = node.left().getValue(); --size; }
-            node.setLeft( new MapNode<K, V> (key, value) ); // maybe don't create a new one if you don't have to?
+            if ( node.left() == null ) {
+                node.setLeft( new MapNode<K, V> (key, value) );
+                ++size;
+            }
+            else {
+                tmp = node.left().getValue();
+                node.left().setValue(value);
+            }
         }
 
         if ( key.compareTo( node.getKey() ) > 0 ) {
-            if ( node.right() != null ) { tmp = node.right().getValue(); --size; }
-            node.setRight( new MapNode<K, V> (key, value) ); // maybe don't create a new one if you don't have to?
+            if ( node.right() == null ) {
+                node.setRight( new MapNode<K, V> (key, value) );
+                ++size;
+            }
+            else {
+                tmp = node.right().getValue();
+                node.right().setValue(value);
+            }
         }
 
-        ++size;
         return tmp;
     }
 
-    private MapNode<K, V> findParentNode(MapNode<K, V> it, K key){
+    private MapNode<K, V> findParentNode(MapNode<K, V> it, K key) {
         if ( it.getKey().equals(key) ) { return it; } // root node
 
         if ( key.compareTo( it.getKey() ) < 0 ) {
@@ -196,6 +207,6 @@ public class BinaryTreeMap<K extends Comparable<K>, V> implements Map<K, V> {
         keys.add( it.getKey() );
     }
 
-    public Set<Map.Entry<K, V>> entrySet(){ return null;}//for now just to get all the methods here and shit
-    public void putAll(Map<? extends K, ? extends V> m){}//for now just to get all the methods here and shit
+    public Set<Map.Entry<K, V>> entrySet() { return null;}//for now just to get all the methods here and shit
+    public void putAll(Map<? extends K, ? extends V> m) {}//for now just to get all the methods here and shit
 }
