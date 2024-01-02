@@ -8,7 +8,7 @@ package BinaryTreeMap;
 import java.util.Map;
 public class MapNode<K extends Comparable<K>, V> { 
     // TODO
-    // private MapEntry<K,V> KVpair;
+    // private MapEntry<K,V> KVpair; I think this might need to be contained in this class instead
     private K key;
     private V value;
     private MapNode<K, V> left, right;
@@ -26,7 +26,7 @@ public class MapNode<K extends Comparable<K>, V> {
         right = null;
     }
 
-    public K getKey() {return key;}
+    public K getKey() {return Key;}
     public V getValue() {return value;}
     public MapNode<K, V> left() {return left;}
     public MapNode<K, V> right() {return right;}
