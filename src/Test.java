@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import BinaryTreeMap.BinaryTreeMap;
 /**
  * Test class to test this stuff
  * @author Marco Antonio Santana <marco@santana.nyc>
