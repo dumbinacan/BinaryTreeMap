@@ -7,6 +7,8 @@ package BinaryTreeMap;
  */
 import java.util.Map;
 public class MapNode<K extends Comparable<K>, V> { 
+    // TODO
+    // private MapEntry<K,V> KVpair;
     private K key;
     private V value;
     private MapNode<K, V> left, right;
