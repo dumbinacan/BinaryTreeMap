@@ -137,6 +137,12 @@ public class BinaryTreeMap<K extends Comparable<K>, V> implements Map<K, V> {
  
     @SuppressWarnings("unchecked")
     public V remove(Object k) {
+        // be sure to get base conditions correct.
+        // After I think we are mainly worried about 3 subtrees
+        // the target's left subtree, right subtree, and
+        // the subtree that holds the remainder of the tree.
+        // we need to find a way to attach them all together
+        // such that the rules of the tree are still intact
         V value;
         MapNode<K, V> tmp, tmpParent, replacement;
         K key = (K) k;
@@ -152,7 +158,7 @@ public class BinaryTreeMap<K extends Comparable<K>, V> implements Map<K, V> {
 
         if ( tmp.isLeaf() ) {
             replacement = findParentNode(root, key);
-            if ( key.compareTo( replacement.getKey() ) < 0 ) { replacement.setLeft(null); }
+            if (key.compareTo( replacement.getKey() ) < 0) { replacement.setLeft(null); }
             else replacement.setRight(null);
             return value;
         }
@@ -165,6 +171,7 @@ public class BinaryTreeMap<K extends Comparable<K>, V> implements Map<K, V> {
         } 
 
         /* replace the node */
+
         tmp.setKey( replacement.getKey() );
         tmp.setValue( replacement.getValue() );
         if ( replacement.left() != null ) {
