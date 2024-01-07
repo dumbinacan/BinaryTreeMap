@@ -29,6 +29,7 @@ public class MapNode<K extends Comparable<K>, V> {
     public void setLeft(MapNode<K, V> left) {this.left = left;}
     public void setRight(MapNode<K, V> right) {this.right = right;}
 
+    Map.Entry<K,V> entry() { return entry; }
     private class Entry implements Map.Entry<K,V> {
         private K k;
         private V v;

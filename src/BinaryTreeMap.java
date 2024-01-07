@@ -137,12 +137,6 @@ public class BinaryTreeMap<K extends Comparable<K>, V> implements Map<K, V> {
  
     @SuppressWarnings("unchecked")
     public V remove(Object k) {
-        // be sure to get base conditions correct.
-        // After I think we are mainly worried about 3 subtrees
-        // the target's left subtree, right subtree, and
-        // the subtree that holds the remainder of the tree.
-        // we need to find a way to attach them all together
-        // such that the rules of the tree are still intact
         V value;
         MapNode<K, V> tmp, tmpParent, replacement;
         K key = (K) k;
@@ -205,6 +199,16 @@ public class BinaryTreeMap<K extends Comparable<K>, V> implements Map<K, V> {
         keys.add( it.getKey() );
     }
 
-    public Set<Map.Entry<K, V>> entrySet(){ return null;}//for now just to get all the methods here and shit
+    public Set<Map.Entry<K, V>> entrySet() {
+        HashSet<Map.Entry<K, V>> entries = new HashSet<Map.Entry<K, V>>();
+        grabEntries(root, entries);
+        return entries;
+    }
+    private void grabEntries(MapNode<K, V> it, HashSet<Map.Entry<K, V>> entries) {
+        if ( it.left() != null ) { grabEntries(it.left(), entries); }
+        if ( it.right() != null ) { grabEntries(it.right(), entries); }
+        entries.add( it.entry() );
+    }
+
     public void putAll(Map<? extends K, ? extends V> m){}//for now just to get all the methods here and shit
 }
