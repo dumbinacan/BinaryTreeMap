@@ -1,4 +1,6 @@
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import BinaryTreeMap.BinaryTreeMap;
 /**
  * Test class to test this stuff
@@ -6,9 +8,11 @@ import BinaryTreeMap.BinaryTreeMap;
  * @version 0.2022
  */
 public class Test{
+    final static int MAP_SIZE = 999999;
     public static void main(String [] args){
-
-        BinaryTreeMap<Integer, Character> test = new BinaryTreeMap<Integer, Character>();
+        System.out.println("containsKey: " + containsKey());
+    /*
+        Map<Integer, Character> test = new BinaryTreeMap<Integer, Integer();
         System.out.println("Map initialize, size is " + test.size());
         System.out.println("adding some values to the map");
 
@@ -77,5 +81,20 @@ public class Test{
             System.out.println("Removing " + i + "Value: " + test.remove(i));
             System.out.println("Updated size: " + test.size());
         }
+    */
     }
+
+    public static boolean containsKey() {
+        Map <Double, Double> test = new BinaryTreeMap<Double, Double>();
+        double key = Math.random() * MAP_SIZE;
+        double value = Math.random() * MAP_SIZE;
+        if (test.containsKey(key) ) { return false; }
+        test.put(key, value);
+        return test.containsKey(key);
+    }
+/*
+    Map <Integer, Integer> = new BinaryTreeMap<Integer, Integer>();
+    Map <Integer, Integer> = new HashMap<Integer, Integer>();
+    for (int i = 0; i < MAP_SIZE;
+*/
 }
