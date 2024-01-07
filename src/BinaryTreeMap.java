@@ -199,6 +199,11 @@ public class BinaryTreeMap<K extends Comparable<K>, V> implements Map<K, V> {
         keys.add( it.getKey() );
     }
 
+    @SuppressWarnings("unchecked")
+    public void putAll(Map<? extends K, ? extends V> m) {
+        for (Map.Entry  entry : m.entrySet()) { this.put( (K) entry.getKey(), (V) entry.getValue() ); }
+    }
+
     public Set<Map.Entry<K, V>> entrySet() {
         HashSet<Map.Entry<K, V>> entries = new HashSet<Map.Entry<K, V>>();
         grabEntries(root, entries);
@@ -209,6 +214,4 @@ public class BinaryTreeMap<K extends Comparable<K>, V> implements Map<K, V> {
         if ( it.right() != null ) { grabEntries(it.right(), entries); }
         entries.add( it.entry() );
     }
-
-    public void putAll(Map<? extends K, ? extends V> m){}//for now just to get all the methods here and shit
 }
